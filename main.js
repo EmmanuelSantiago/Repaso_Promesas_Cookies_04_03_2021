@@ -1,92 +1,66 @@
-
-
 window.onload = function(){
-    let object = new Object({
-        nombre : "Emmanuel",
-        apellido : "Santiago",
-        Saludar : function(){
-            return `Hola ${this.nombre} ${this.apellido} te saluda el Chache`; 
+    const data = {mes : 3, dia : 4, ano : 2022, hora : 0, min : 1, seg : 10 };
+    
+    const Cookie = new Object({
+        date : new Date(),
+        limite: function(data){
+            const expire = this.expire();
+            expire[1] = this.Dia(data.dia);
+            expire[2] = this.Mes(data.mes);
+            expire[3] = this.Ano(data.ano);
+            expire[4][0] = this.Hor(data.hora);
+            expire[4][1] = this.Min(data.min);
+            expire[4][2] = this.Seg(data.seg);
+            expire[4] = expire[4].join(":");
+            return expire.join(" ");
+        },
+        expire: function(){
+            const cadena = this.date.toGMTString().split(" ");
+            cadena[4] = cadena[4].split(":");
+            return cadena;
+        },
+        Sem : function(){
+            const semana = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+            return semana[this.date.getDay()];//
+        },
+        Mes : function(id){
+            const mes = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+            return (mes.hasOwnProperty(id-1)) ? mes[id-1] : mes[this.date.getMonth()];
+        },
+        Dia : function(id){
+            const dia = this.date.getMonth();
+            const calendario = new Date(this.Ano(), (dia+1<=12 && dia+1>=1) ? dia+1 : dia-1, 0);
+            return (id<=calendario.getDate()) ? (id>=this.date.getDay()) ? "0"+id : this.date.getDay() : this.date.getDay();
+        },
+        Ano : function(id=0){
+            return (id>=this.date.getFullYear()) ? id : this.date.getFullYear();
+        },
+        Hor : function(id){
+            const hora = this.expire()[4][0];
+            const suma = ""+(parseInt(hora)+id);
+            return (suma<=23) ? (suma.length!=1) ? suma : "0"+suma : hora;
+        },
+        Min : function(id){
+            const min = this.expire()[4][1];
+            const suma = ""+(parseInt(min)+id);
+            return (suma<=59) ? (suma.length!=1) ? suma : "0"+suma : min;
+        },
+        Seg : function(id){
+            const seg = this.expire()[4][2];
+            const suma = ""+(parseInt(seg)+id);
+            return (suma<=59) ? (suma.length!=1) ? suma : "0"+suma : seg;
         }
-    })
-    
-    // localStorage.setItem("response-data", JSON.stringify({mesaje: "success", data: object.Saludar()}));
-
-      let nombre = "data";
-    // const frame = document.createDocumentFragment();
-    caches.open(nombre).then(function(cache) {
-        cache.add("Cache/app.js");
-        cache.match("Cache/app.js").then(function(info){
-            info.text().then(function(variable){
-                const nodo = document.createElement("script");
-                const text = document.createTextNode(variable);
-                nodo.appendChild(text);
-                document.head.appendChild(nodo);
-                object.edad = 33;
-                object.Miedad = function(){
-                    return `${this.nombre} ${this.apellido} tiene ${this.edad} años`;
-                };
-                object.Saludar = function(){
-                    return `Hola ${this.nombre} ${this.apellido} te saluda en Chache`; 
-                }
-                
-                response.success = object.Saludar();
-                response.mensaje = object.Miedad();
-
-                localStorage.setItem("respuesta", JSON.stringify(response))
-                
-            })
-        });
     });
-    
-    
+    //console.warn("se está imprimiendo");
+    console.log(Cookie.limite(data));
+    document.cookie = "Nombre=Diana; expires="+Cookie.limite(data)+";";
+    var date = new Date();
+    let cadena = date.toGMTString();
+    console.log(cadena);    
+
+    // Cookie.limite.call(expire).then(res=>{
+    //     console.log(res);
+    // })
 
 
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-    // let lista = [];
-    // lista["Nombre"] = "Miguel";
-
-    // let data = new Object({
-    //     nombre : "Miguel Angel",
-    //     apellido : "Castro Escamilla",
-    //     edada : 23
-    // });
-    // sessionStorage.setItem("Informacion", JSON.stringify(data));
-    // console.log(JSON.parse(sessionStorage.getItem("Informacion")));
-
-
-
-
-
-
-
-
-    // const medioId = document.getElementById("inpu_nombre2");
-    // // console.log(medioId.innerHTML);   //Tomamos los datos de la etiqueta con los nodos ("Las etiquetas hijos")
-    // // console.log(medioId.innerText);   //Tomamos los datos de la etiqueta sin los nodos ("Las etiquetas hijos")
-    // // console.log(medioId.textContent); //Tomamos los datos de la etiqueta sin los nodos ("Las etiquetas hijos") con su espaciado
-    // const medioClass = document.getElementsByClassName("pequeño");
-    // // medioId.classList.add("pequño"); //Agregamos un clase
-    // // medioId.classList.remove("grande") //Removemos un clase
-    // // medioId.classList.toggle("pequeño", true); //Agregamos y removemos una clase siempre y cuando no de pasemos el segundo valor (true, false)
-    // // medioId.classList.replace("extraGrande", "pequeño"); //Remplazamos un clase existente dentro del nodo por otra
-
-    // const nodo = $(".extraGrande");
-    // console.log(nodo.classList);
 }
-
-// function $(id){
-//     return document.querySelector(id);
-// }
